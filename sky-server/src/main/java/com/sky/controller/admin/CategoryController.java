@@ -21,6 +21,15 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @PostMapping
+    @ApiOperation("新增分类")
+    public Result save(@RequestBody CategoryDTO categoryDTO){
+        log.info("新增分类：{}",categoryDTO);
+        categoryService.save(categoryDTO);
+        return Result.success();
+
+    }
+
     /**
      * 分类分页查询
      * @param categoryPageQueryDTO
@@ -56,14 +65,27 @@ public class CategoryController {
 
     }
 
+    /**
+     * 启用禁用分类
+     * @param status
+     * @param id
+     * @return
+     */
     @PostMapping("/status/{status}")
-    @ApiOperation("启用禁用员工")
+    @ApiOperation("启用禁用分类")
     public Result setStatus(@PathVariable Integer status, Long id){
-        log.info("启用禁用员工账号:{},{}",status,id);
+        log.info("启用禁用分类:{},{}",status,id);
         categoryService.setStatus(status,id);
         return Result.success();
     }
 
+    @DeleteMapping
+    @ApiOperation("根据id删除分类")
+    public Result deleteById(Long id){
+        log.info("根据id删除分类：{}",id);
+        categoryService.deleteById(id);
+        return Result.success();
+    }
 
 
 }

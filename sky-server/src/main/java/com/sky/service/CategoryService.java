@@ -3,6 +3,7 @@ package com.sky.service;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.result.PageResult;
+import org.apache.ibatis.annotations.Insert;
 
 public interface CategoryService {
     /**
@@ -25,4 +26,16 @@ public interface CategoryService {
      * @param id
      */
     void setStatus(Integer status, Long id);
+
+    /**
+     * 新增分类
+     * @param categoryDTO
+     */
+    void save(CategoryDTO categoryDTO);
+
+    /**
+     * 根据id删除分类
+     * @param id
+     */
+    void deleteById(Long id);
 }
