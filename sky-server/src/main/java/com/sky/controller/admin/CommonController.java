@@ -35,6 +35,7 @@ public class CommonController {
             String originalFilename = file.getOriginalFilename();
             //获取文件后缀
             String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            //使用uuid生成随机名称拼接文件后缀
             String newName = UUID.randomUUID().toString() + extension;
 
             //文件的请求路径
