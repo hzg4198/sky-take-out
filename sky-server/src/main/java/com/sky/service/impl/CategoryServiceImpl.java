@@ -116,4 +116,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
         categoryMapper.deleteById(id);
     }
+
+    /**
+     * 根据类型查询
+     * @param type
+     * @return
+     */
+    @Override
+    public List<Category> typeQuery(Integer type) {
+        return categoryMapper.queryByType(type);
+    }
 }
