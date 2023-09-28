@@ -98,13 +98,10 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
         //删除一个 或者删除多个
         //删除菜品数据
-        for (Long id : ids) {
-            dishMapper.deleteById(id);
-            //删除口味数据
-            QueryWrapper<DishFlavor> wrapper = new QueryWrapper<>();
-            wrapper.lambda().eq(DishFlavor::getId,id);
-            flavorService.getBaseMapper().delete(wrapper);
-        }
+        dishMapper.deleteBatchIds(ids);
+        QueryWrapper<DishFlavor> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(DishFlavor::getDishId,ids);
+        flavorService.getBaseMapper().delete(wrapper);
 
     }
 }
