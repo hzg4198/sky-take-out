@@ -1,5 +1,6 @@
 package com.sky.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
@@ -35,4 +36,13 @@ public interface DishMapper extends BaseMapper<Dish> {
      * @return
      */
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
+
+    /**
+     * 根据id修改
+     * @param dish
+     * @return
+     */
+    @Override
+    @AutoFill(OperationType.UPDATE)
+    int updateById(Dish dish);
 }

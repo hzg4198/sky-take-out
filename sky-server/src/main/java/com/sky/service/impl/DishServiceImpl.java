@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.Page;
@@ -13,7 +14,6 @@ import com.sky.entity.DishFlavor;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishMapper;
-import com.sky.mapper.FlavorMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
@@ -104,4 +104,52 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         flavorService.getBaseMapper().delete(wrapper);
 
     }
+
+    /**
+     * 根据id查询菜品和对应的口味
+     * @return
+     */
+    @Override
+    public DishVO getByIdWithFlavor(Long id) {
+        //根据id查询菜品数据
+        Dish dish = dishMapper.selectById(id);
+
+        //根据菜品id查询口味数据
+        QueryWrapper<DishFlavor> dishFlavorQueryWrapper = new QueryWrapper<>();
+        dishFlavorQueryWrapper.lambda().eq(DishFlavor::getDishId,id);
+        List<DishFlavor> dishFlavors = flavorService.getBaseMapper().selectList(dishFlavorQueryWrapper);
+
+        //将查询到的数据封装到VO
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish,dishVO);
+        dishVO.setFlavors(dishFlavors);
+
+        return dishVO;
+
+    }
+
+    /**
+     * 根据id修改菜品基本信息和对应的口味信息
+     * @param dishDTO
+     */
+    @Override
+    public void updateWithFlavor(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        //修改菜品基本信息
+        log.info("dish:{}",dish);
+        dishMapper.updateById(dish);
+        //删除原本的口味信息
+        flavorService.getBaseMapper().deleteById(dishDTO.getId());
+
+        //重新插入口味数据
+
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if(flavors != null && flavors.size() > 0){
+            flavors.forEach(o-> o.setDishId(dishDTO.getId()));
+            flavorService.saveBatch(flavors);
+        }
+
+    }
+
 }
