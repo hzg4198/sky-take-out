@@ -8,6 +8,7 @@ import com.sky.entity.Setmeal;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 @Mapper
@@ -31,4 +32,8 @@ public interface SetMealMapper extends BaseMapper<Setmeal> {
      * @return
      */
     Page<SetmealVO> pageQuery(SetmealPageQueryDTO pageQueryDTO);
+
+    @Override
+    @AutoFill(OperationType.UPDATE)
+    int updateById(@Param("et") Setmeal entity);
 }

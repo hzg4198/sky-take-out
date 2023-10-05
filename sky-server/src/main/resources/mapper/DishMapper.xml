@@ -18,7 +18,10 @@
         </where>
         order by d.create_time desc
     </select>
-    
+    <select id="getBySetMealId" resultType="com.sky.entity.Dish">
+        select a.* from dish a left join setmeal_dish b on b.dish_id=a.id where b.setmeal_id = #{id}
+    </select>
+
     <update id="updateById">
         update dish
         <set>

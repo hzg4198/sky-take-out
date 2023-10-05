@@ -11,6 +11,8 @@ import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface DishMapper extends BaseMapper<Dish> {
     /**
@@ -45,4 +47,11 @@ public interface DishMapper extends BaseMapper<Dish> {
     @Override
     @AutoFill(OperationType.UPDATE)
     int updateById(Dish dish);
+
+    /**
+     * 根据套餐id查询菜品
+     * @param id
+     * @return
+     */
+	List<Dish> getBySetMealId(Long id);
 }

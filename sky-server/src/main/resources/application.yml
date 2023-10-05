@@ -27,6 +27,9 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     use-generated-keys: true
+  global-config:
+    db-config:
+      id-type: auto
 
 logging:
   level:
